@@ -1,0 +1,878 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Escorcianismo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bricolage+Grotesque:opsz,wght@12..96,300..800&display=swap">
+<style>
+/* Layout: bandas de color a sangre, Anton gigante en mayúsculas, tarjetas con borde duro y sombra plana.
+   Interacciones: divisa arrastrable, compromisos que se firman, ejes en pestañas, fusión de entidades. */
+:root{
+  --ink:#10142B;
+  --bg:#F5F6FB; --fg:#10142B; --muted:#474D6E; --surface:#FFFFFF; --line:#D8DBEB;
+  --sun:#FFD21F; --cobalt:#2B3CFF; --coral:#FF5A47;
+  --on-sun:#10142B; --on-coral:#10142B; --on-cobalt:#FFFFFF; --on-ink:#F4F5FC;
+  --link:#2B3CFF; --focus:#2B3CFF; --edge:var(--fg); --ink-band:#10142B;
+  --display:"Anton","Impact","Haettenschweiler","Arial Narrow",sans-serif;
+  --body:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gl:max(16px,env(safe-area-inset-left,0px)); --gr:max(16px,env(safe-area-inset-right,0px));
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A0D20; --fg:#F1F2FA; --muted:#A8ADCB; --surface:#141937; --line:#283058;
+    --link:#8E9BFF; --focus:#FFD21F; --ink-band:#05071A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A0D20; --fg:#F1F2FA; --muted:#A8ADCB; --surface:#141937; --line:#283058;
+  --link:#8E9BFF; --focus:#FFD21F; --ink-band:#05071A; color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:7rem}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:1.0625rem;line-height:1.55;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+a{color:var(--link)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+h1,h2,h3,p,ul{margin:0}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:var(--gl);top:.5rem;z-index:40;background:var(--sun);color:var(--ink);padding:.5rem 1rem}
+
+.wrap{width:100%;max-width:1280px;margin-inline:auto;padding-left:var(--gl);padding-right:var(--gr)}
+.band{padding-block:clamp(3.5rem,9vw,7rem);overflow:clip}
+.band--sun{background:var(--sun);color:var(--on-sun);--edge:var(--ink);--focus:var(--ink)}
+.band--coral{background:var(--coral);color:var(--on-coral);--edge:var(--ink);--focus:var(--ink)}
+.band--cobalt{background:var(--cobalt);color:var(--on-cobalt);--edge:#fff;--focus:var(--sun)}
+.band--ink{background:var(--ink-band);color:var(--on-ink);--edge:var(--on-ink);--focus:var(--sun)}
+
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.72}
+h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(2.3rem,6.2vw,5rem);line-height:.98;margin:.7rem 0 1.5rem;text-wrap:balance}
+h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.05;letter-spacing:.01em}
+.big{font-size:clamp(1.3rem,2.4vw,1.75rem);line-height:1.35;font-weight:500;text-wrap:pretty}
+.prose{display:grid;gap:1.1rem;max-width:62ch}
+.lead{font-size:clamp(1.1rem,1.8vw,1.35rem);max-width:60ch;text-wrap:pretty}
+mark{background:var(--sun);color:var(--on-sun);padding:0 .2em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.grid2{display:grid;gap:2rem 4rem}
+.grid2>*{min-width:0}
+@media(min-width:860px){.grid2{grid-template-columns:5fr 7fr}}
+
+.card{background:var(--surface);color:var(--fg);border:3px solid var(--edge);box-shadow:6px 6px 0 var(--edge);padding:1.4rem 1.4rem 1.5rem;display:grid;gap:.7rem;align-content:start}
+.card p{color:var(--muted)}
+
+/* NAV */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:3px solid var(--fg)}
+.nav__in{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.5rem;padding-block:.55rem}
+.nav__brand{font-family:var(--display);text-transform:uppercase;font-size:1.5rem;letter-spacing:.03em;text-decoration:none;color:var(--fg);line-height:1}
+.nav__links{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none;order:3;width:100%;padding:.1rem 0 .15rem}
+.nav__links::-webkit-scrollbar{display:none}
+.nav__links a{white-space:nowrap;text-decoration:none;color:var(--fg);font-weight:600;font-size:.92rem;padding:.3rem .7rem;border-radius:99px}
+.nav__links a:hover{background:var(--line)}
+.nav__links a[aria-current="true"]{background:var(--sun);color:var(--on-sun)}
+@media(min-width:900px){.nav__links{order:0;width:auto;margin-left:auto}html{scroll-padding-top:5rem}}
+.nav__bar{position:absolute;left:0;right:0;bottom:-3px;height:3px;background:var(--coral);transform-origin:0 50%;transform:scaleX(0)}
+
+/* HERO */
+.hero{padding-block:clamp(2.5rem,6vw,5rem) clamp(3rem,7vw,6rem)}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.tag{font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--ink);border-radius:99px;padding:.25rem .8rem}
+.tag--solid{background:var(--ink);color:var(--on-ink)}
+.hero__t{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(2.6rem,11.6vw,10rem);line-height:.92;margin:1.5rem 0 2.2rem}
+.ln{display:block;overflow:hidden;padding:.06em .1em;margin:-.06em -.1em}
+.ln>span{display:inline-block;animation:up .9s cubic-bezier(.2,.8,.2,1) both}
+.ln:nth-child(2)>span{animation-delay:.12s}
+.stamp-hl{display:inline-block;font-style:normal;background:var(--coral);color:var(--on-coral);padding:0 .14em;transform:rotate(-1.6deg);animation:thud .5s .8s cubic-bezier(.3,1.6,.5,1)}
+@keyframes up{from{transform:translateY(105%)}to{transform:none}}
+@keyframes thud{0%{transform:rotate(-1.6deg) scale(1.4)}100%{transform:rotate(-1.6deg) scale(1)}}
+.hero__row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:2rem}
+.hero__copy{display:grid;gap:1.6rem;max-width:44rem}
+.hero__ctas{display:flex;flex-wrap:wrap;gap:1rem}
+.btn{display:inline-flex;align-items:center;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:1.1rem;padding:.75rem 1.3rem .65rem;border:3px solid var(--ink);background:var(--ink);color:var(--on-ink);text-decoration:none;box-shadow:5px 5px 0 var(--coral);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--coral)}
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--coral)}
+.btn--ghost{background:transparent;color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
+.btn--ghost:hover{box-shadow:7px 7px 0 var(--ink)}
+.badge{width:clamp(120px,16vw,190px);height:auto;flex:none}
+.b-bg{fill:var(--ink)}
+.b-txt{font-family:var(--display);font-size:15px;fill:var(--sun);letter-spacing:.04em}
+.b-mid{font-family:var(--display);font-size:38px;fill:var(--coral)}
+.b-spin{transform-origin:100px 100px;animation:spin 24s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* MARQUEE */
+.marquee{background:var(--ink-band);color:var(--sun);overflow:hidden;border-block:3px solid var(--ink)}
+.marquee__track{display:flex;width:max-content;animation:slide 48s linear infinite}
+.marquee:hover .marquee__track{animation-play-state:paused}
+.marquee__grp{display:flex;align-items:center;flex-shrink:0;padding-block:1rem .85rem}
+.marquee__grp span{font-family:var(--display);text-transform:uppercase;font-size:clamp(1.3rem,2.4vw,1.9rem);letter-spacing:.04em;white-space:nowrap}
+.marquee__grp i{width:.7rem;height:.7rem;background:var(--coral);transform:rotate(45deg);margin-inline:1.6rem;flex:none}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* QUÉ ES */
+.focus-t{margin-top:3.5rem}
+.focus{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:1.1rem;margin-top:1rem}
+.ftile{min-height:8.5rem;padding:1.2rem 1.2rem 1rem;display:flex;align-items:flex-end;border:3px solid var(--edge);box-shadow:6px 6px 0 var(--edge);font-family:var(--display);text-transform:uppercase;font-size:clamp(1.7rem,2.8vw,2.3rem);line-height:1;transition:transform .15s,box-shadow .15s}
+.ftile:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--edge)}
+.ftile--sun{background:var(--sun);color:var(--on-sun)}
+.ftile--cobalt{background:var(--cobalt);color:var(--on-cobalt)}
+.ftile--coral{background:var(--coral);color:var(--on-coral)}
+.ftile--ink{background:var(--ink-band);color:var(--on-ink)}
+.vs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1.1rem;margin-top:2.5rem}
+.vs ul{list-style:none;padding:0;display:grid;gap:.4rem;font-weight:600}
+.vs li::before{content:"";display:inline-block;width:.6rem;height:.6rem;background:var(--coral);margin-right:.6rem;transform:rotate(45deg)}
+.vs .card--no li::before{background:var(--muted)}
+
+/* DIVISA */
+.split{background:var(--ink-band)}
+.split__stage{position:relative;display:grid;grid-template-columns:1fr;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.split__a,.split__b{display:flex;flex-direction:column;justify-content:center;gap:.6rem;min-width:0;padding-block:clamp(3rem,7vw,5.5rem);padding-left:max(var(--gl),calc((100vw - 1248px)/2));padding-right:max(var(--gr),calc((100vw - 1248px)/2))}
+.split__a{background:var(--sun);color:var(--on-sun)}
+.split__b{background:var(--cobalt);color:var(--on-cobalt)}
+.split__big{font-family:var(--display);text-transform:uppercase;font-size:clamp(2.6rem,7.2vw,6.2rem);line-height:.95;text-wrap:balance}
+.split__sm{font-size:clamp(1.1rem,2vw,1.6rem);font-weight:700}
+.split__handle{display:none}
+@media(min-width:760px){
+  .split__stage{grid-template-columns:var(--s,50%) 1fr;min-height:min(72vh,560px);cursor:ew-resize}
+  .split__a{padding-right:3.6rem}.split__b{padding-left:3.6rem}
+  .split__handle{display:block;position:absolute;top:0;bottom:0;left:var(--s,50%);width:0;pointer-events:none}
+  .split__handle::before{content:"";position:absolute;top:0;bottom:0;left:-3px;width:6px;background:var(--ink)}
+  .knob{position:absolute;left:0;top:50%;width:3.6rem;height:3.6rem;border-radius:50%;background:var(--ink);color:#fff;border:3px solid #fff;display:grid;place-items:center;transform:translate(-50%,-50%);transition:transform .15s}
+  .split__stage.is-drag .knob{transform:translate(-50%,-50%) scale(1.12)}
+  .split__stage:has(#bal:focus-visible) .knob{outline:3px solid var(--sun);outline-offset:3px}
+}
+.hintlbl{position:absolute;left:0;top:calc(50% + 2.4rem);transform:translateX(-50%);font-family:var(--display);text-transform:uppercase;font-size:.95rem;letter-spacing:.06em;background:var(--ink);color:#fff;padding:.15rem .6rem 0;white-space:nowrap}
+
+/* LIBERTAD */
+.compare{margin-top:2.5rem}
+.card--hot{background:var(--sun);color:var(--on-sun);--edge:var(--fg)}
+.card--hot p{color:var(--on-sun)}
+.card .tagline{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.card--hot .tagline{color:var(--on-sun);opacity:.75}
+
+/* COMPROMISOS */
+.pledges{list-style:none;padding:0;margin:2.5rem 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:1.4rem}
+.pledge{position:relative;display:grid;gap:.5rem;align-content:start;width:100%;height:100%;text-align:left;font:inherit;color:var(--fg);background:var(--surface);border:3px solid var(--edge);padding:1.3rem 1.3rem 3.4rem 4.1rem;box-shadow:6px 6px 0 var(--edge);cursor:pointer;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.pledge:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--edge)}
+.pledge[aria-pressed="true"]{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--edge)}
+.pledge__h{font-family:var(--display);text-transform:uppercase;font-size:1.55rem;line-height:1.05}
+.pledge__t{color:var(--muted);font-size:1rem}
+.pledge__box{position:absolute;left:1.2rem;top:1.3rem;width:1.8rem;height:1.8rem;border:3px solid var(--edge);background:var(--bg)}
+.pledge[aria-pressed="true"] .pledge__box{background:var(--cobalt);border-color:var(--cobalt)}
+.pledge[aria-pressed="true"] .pledge__box::after{content:"";position:absolute;left:.42rem;top:.1rem;width:.5rem;height:.95rem;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(40deg)}
+.stamp{position:absolute;right:.9rem;bottom:.7rem;font-family:var(--display);text-transform:uppercase;font-size:1.6rem;letter-spacing:.06em;color:var(--link);border:3px solid currentColor;padding:.1em .4em 0;transform:rotate(-8deg) scale(1.8);opacity:0;transition:transform .25s cubic-bezier(.3,1.6,.5,1),opacity .15s;pointer-events:none}
+.pledge[aria-pressed="true"] .stamp{opacity:1;transform:rotate(-8deg) scale(1)}
+.pledge-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem 1rem;margin-top:2.4rem;font-weight:700}
+.pledge-meta b{font-family:var(--display);font-weight:400;font-size:clamp(3rem,7vw,5rem);line-height:.9}
+
+/* EJES */
+.axes{display:grid;gap:1.6rem;margin-top:2.5rem}
+@media(min-width:900px){.axes{grid-template-columns:minmax(220px,290px) 1fr;align-items:start}}
+.axes__tabs{display:flex;gap:.7rem;overflow-x:auto;padding:.5rem .6rem .9rem;margin:-.5rem -.6rem 0}
+@media(min-width:900px){.axes__tabs{flex-direction:column;overflow:visible;padding:.3rem}}
+.tab{font-family:var(--display);text-transform:uppercase;font-size:1.5rem;letter-spacing:.03em;text-align:left;white-space:nowrap;padding:.7rem 1rem .6rem;border:3px solid var(--edge);background:var(--surface);color:var(--fg);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.tab:hover{transform:translate(-2px,-2px)}
+.tab[aria-selected="true"]{background:var(--tc);color:var(--tf);box-shadow:5px 5px 0 var(--edge);transform:translate(-2px,-2px)}
+[data-c="sun"]{--tc:var(--sun);--tf:var(--on-sun)}
+[data-c="coral"]{--tc:var(--coral);--tf:var(--on-coral)}
+[data-c="cobalt"]{--tc:var(--cobalt);--tf:var(--on-cobalt)}
+.panel{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:1.1rem;min-height:23rem;padding:clamp(1.5rem,4vw,3rem);background:var(--tc);color:var(--tf);border:3px solid var(--fg);box-shadow:8px 8px 0 var(--fg);animation:pop .3s ease-out}
+.panel[hidden]{display:none}
+@keyframes pop{from{transform:translateY(14px)}to{transform:none}}
+.panel::after{content:attr(data-name);position:absolute;right:-.04em;bottom:-.2em;font-family:var(--display);text-transform:uppercase;font-size:clamp(4.5rem,15vw,11rem);line-height:1;opacity:.1;pointer-events:none;white-space:nowrap}
+.panel h3{font-size:clamp(2rem,4.4vw,3.4rem)}
+.panel .lead{position:relative;z-index:1}
+.chips{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:.6rem;list-style:none;padding:0;margin-top:auto}
+.chips li{border:2px solid currentColor;border-radius:99px;padding:.3rem .85rem;font-weight:600;font-size:.97rem}
+.vs--axes{margin-top:2.5rem}
+.vs--axes .card{box-shadow:6px 6px 0 var(--edge)}
+
+/* ESTADO */
+.reorg__head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;margin-top:2.5rem}
+.seg{display:inline-flex;border:3px solid var(--ink)}
+.seg button{font-family:var(--display);text-transform:uppercase;font-size:1.2rem;letter-spacing:.04em;padding:.6rem 1.4rem .5rem;background:transparent;color:var(--ink);border:0;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+.counter{display:flex;align-items:baseline;gap:.7rem;font-weight:700}
+.counter b{font-family:var(--display);font-weight:400;font-size:clamp(3.5rem,9vw,6.5rem);line-height:.9;font-variant-numeric:tabular-nums;min-width:2ch}
+.fusions{list-style:none;padding:0;margin:2rem 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:1rem}
+.fusion{position:relative;display:grid;align-items:center;min-height:7.2rem;padding:1rem;overflow:hidden;background:var(--surface);color:var(--fg);border:3px solid var(--ink);transition:background .4s,color .4s}
+.fusion>*{grid-area:1/1;transition:transform .5s cubic-bezier(.6,0,.2,1),opacity .35s}
+@media(min-width:1060px){.fusion:last-child{grid-column:1/-1}}
+.fusion__now{display:flex;flex-wrap:wrap;gap:.5rem}
+.fusion__now .chip{border:2px solid var(--ink);padding:.2rem .7rem;font-weight:600;font-size:.94rem;background:var(--bg)}
+.fusion__new{font-family:var(--display);text-transform:uppercase;font-size:1.5rem;line-height:1.08;opacity:0;transform:scale(.85)}
+.reorg[data-mode="propuesta"] .fusion{background:var(--cobalt);color:var(--on-cobalt)}
+.reorg[data-mode="propuesta"] .fusion__now{pointer-events:none}
+.reorg[data-mode="propuesta"] .fusion__now .chip{opacity:0}
+.reorg[data-mode="propuesta"] .fusion__now .chip:nth-child(odd){transform:translateX(45%)}
+.reorg[data-mode="propuesta"] .fusion__now .chip:nth-child(even){transform:translateX(-45%)}
+.reorg[data-mode="propuesta"] .fusion__new{opacity:1;transform:none}
+.reorg-foot{display:grid;gap:1.1rem;margin-top:2.5rem}
+@media(min-width:860px){.reorg-foot{grid-template-columns:5fr 7fr;align-items:start}}
+.reorg-foot .card{box-shadow:6px 6px 0 var(--ink);border-color:var(--ink)}
+
+/* FUTURO */
+.tecno{display:grid;gap:2rem 4rem}
+.tecno>*{min-width:0}
+.tecno h2{font-size:clamp(2.2rem,5.2vw,4.4rem)}
+@media(min-width:900px){.tecno{grid-template-columns:7fr 5fr;align-items:end}}
+.rules{list-style:none;padding:0;display:grid;margin-top:.5rem}
+.rules li{font-family:var(--display);text-transform:uppercase;font-size:clamp(1.4rem,2.6vw,2rem);padding:.8rem 0 .65rem;border-top:3px solid var(--on-ink)}
+.rules li:last-child{border-bottom:3px solid var(--on-ink)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:1.1rem;margin-top:3rem}
+.tile{display:flex;flex-direction:column;justify-content:space-between;gap:2.5rem;min-height:12rem;padding:1.2rem;border:3px solid var(--on-ink);font-family:var(--display);text-transform:uppercase;font-size:clamp(1.55rem,2.5vw,2.05rem);line-height:1;transition:transform .2s,background .2s,color .2s}
+.tile:hover{background:var(--sun);color:var(--on-sun);border-color:var(--sun);transform:translateY(-6px) rotate(-1deg)}
+.tile svg{width:2.6rem;height:2.6rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ladder{margin-top:3rem;display:grid;gap:.6rem}
+.ladder__lbl{display:flex;justify-content:space-between;gap:1rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.82rem}
+.ladder__track{height:1.1rem;border:3px solid var(--on-ink);padding:2px}
+.ladder__fill{display:block;height:100%;width:100%;transform-origin:0 50%;background:linear-gradient(90deg,var(--cobalt),var(--sun))}
+@supports (animation-timeline:view()){
+  .ladder__fill{animation:fill linear both;animation-timeline:view();animation-range:entry 20% cover 45%}
+}
+@keyframes fill{from{transform:scaleX(.12)}to{transform:scaleX(1)}}
+
+/* VALORES */
+.vals{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:1.4rem;margin-top:2.5rem}
+.val{display:grid;gap:.6rem;align-content:start;background:var(--surface);border:3px solid var(--edge);border-top:12px solid var(--c);padding:1.3rem 1.4rem 1.5rem;box-shadow:6px 6px 0 var(--edge);transition:transform .15s,box-shadow .15s}
+.val:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--edge)}
+.val:nth-child(3n+1){--c:var(--sun)}.val:nth-child(3n+2){--c:var(--cobalt)}.val:nth-child(3n){--c:var(--coral)}
+.val p{color:var(--muted)}
+
+/* TEST */
+.lines{margin-top:2rem}
+.lines .card{box-shadow:6px 6px 0 var(--edge)}
+.stack{display:grid;gap:1.4rem}
+.stack[hidden]{display:none}
+.quiz{--edge:var(--fg);margin-top:2.2rem;padding:clamp(1.3rem,3.5vw,2.4rem);border-color:var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.quiz__top{display:grid;gap:.6rem}
+.quiz__count{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.quiz__bar{height:.7rem;border:2px solid var(--edge);background:var(--bg)}
+.quiz__bar span{display:block;height:100%;width:0;background:var(--cobalt);transition:width .3s}
+.quiz__q{font-family:var(--body);text-transform:none;font-weight:700;font-size:clamp(1.3rem,2.6vw,2rem);line-height:1.2;letter-spacing:0;text-wrap:balance;outline:none;min-height:3.6em}
+.likert{display:grid;gap:.6rem;grid-template-columns:1fr}
+@media(min-width:760px){.likert{grid-template-columns:repeat(5,1fr)}}
+.likert button{font:inherit;font-weight:700;font-size:.98rem;line-height:1.2;padding:.9rem .6rem;border:3px solid var(--edge);background:var(--bg);color:var(--fg);cursor:pointer;transition:transform .12s,box-shadow .12s}
+.likert button:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--edge)}
+.likert button[aria-pressed='true']{background:var(--cobalt);color:var(--on-cobalt)}
+.quiz__nav{display:flex;justify-content:space-between;align-items:center;min-height:2rem}
+.linkbtn{font:inherit;font-weight:700;background:none;border:0;color:var(--link);cursor:pointer;text-decoration:underline;padding:.3rem 0}
+.res__t{font-size:clamp(2rem,5vw,3.6rem);line-height:1;outline:none}
+.res__d{max-width:60ch;font-size:1.1rem;color:var(--fg)}
+.res__grid{display:grid;gap:1.6rem;align-items:center}
+.res__grid>*{min-width:0}
+@media(min-width:860px){.res__grid{grid-template-columns:1fr minmax(260px,360px)}}
+.bars{display:grid;gap:1.2rem}
+.bar__row{display:grid;gap:.35rem}
+.bar__lbl{display:flex;justify-content:space-between;gap:1rem;font-weight:700;color:var(--fg)}
+.bar__trk{height:1.1rem;border:2px solid var(--edge);background:var(--bg)}
+.bar__trk span{display:block;height:100%;width:0;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.bar__row--esc .bar__trk span{background:var(--sun)}
+.bar__row--con .bar__trk span{background:var(--cobalt)}
+.res__line{color:var(--muted)}
+.map{width:100%;max-width:360px;height:auto;justify-self:center}
+.m-box{fill:var(--bg);stroke:var(--edge);stroke-width:3}
+.m-ax{stroke:var(--line);stroke-width:2;stroke-dasharray:4 4}
+.m-esc{fill:var(--sun);opacity:.8}
+.m-con{fill:var(--cobalt);opacity:.6}
+.m-dot{fill:var(--fg);stroke:var(--bg);stroke-width:3;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.m-t{font-family:var(--display);font-size:13px;text-anchor:middle;text-transform:uppercase;letter-spacing:.04em}
+.m-t--esc{fill:#10142B}
+.m-t--con{fill:#fff}
+.m-ax-t{font-size:10px;font-weight:700;fill:var(--muted);text-anchor:middle;letter-spacing:.06em;text-transform:uppercase}
+
+/* FOOTER */
+.foot{padding-block:clamp(3rem,8vw,6rem) clamp(2rem,5vw,3rem)}
+.foot__w{font-family:var(--display);text-transform:uppercase;font-size:clamp(2.5rem,12.2vw,12rem);line-height:.9}
+.foot__row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:1.5rem 3rem;margin-top:2rem}
+.foot__row p{max-width:46ch}
+.foot .btn{background:var(--sun);color:var(--on-sun);border-color:var(--sun);box-shadow:5px 5px 0 var(--ink)}
+
+/* Movimiento de entrada: solo transform, el contenido siempre es visible */
+@supports (animation-timeline:view()){
+  .rise{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+}
+@keyframes rise{from{transform:translateY(36px)}to{transform:none}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+
+<a class="skip" href="#que-es">Saltar al contenido</a>
+
+<nav class="nav" aria-label="Secciones">
+  <div class="wrap nav__in">
+    <a class="nav__brand" href="#inicio">Escorcianismo</a>
+    <div class="nav__links" id="navlinks">
+      <a href="#que-es">Qué es</a><a href="#divisa">Divisa</a><a href="#libertad">Libertad</a><a href="#compromisos">Compromisos</a><a href="#ejes">Ejes</a><a href="#estado">Estado</a><a href="#futuro">Futuro</a><a href="#valores">Valores</a><a href="#test">Test</a>
+    </div>
+  </div>
+  <div class="nav__bar" id="bar"></div>
+</nav>
+
+<header id="inicio" class="band band--sun hero">
+  <div class="wrap">
+    <p class="tags"><span class="tag">Corriente sociopolítica colombiana</span><span class="tag tag--solid">Surgió el 28 de agosto de 2026</span></p>
+    <h1 class="hero__t" aria-label="Centroizquierda de la mano firme">
+      <span class="ln"><span>Centroizquierda</span></span>
+      <span class="ln"><span>de la <em class="stamp-hl">mano firme</em></span></span>
+    </h1>
+    <div class="hero__row">
+      <div class="hero__copy">
+        <p class="lead">El escorcianismo es la corriente propuesta por la ingeniera y política Iris Maia Escorcia Duque. Toma ideas de izquierda y de derecha que han demostrado funcionar y las combina con rigor técnico y experimentación.</p>
+        <p class="hero__ctas"><a class="btn" href="#divisa">Ver su divisa</a><a class="btn btn--ghost" href="#compromisos">Los compromisos</a></p>
+      </div>
+      <svg class="badge" viewBox="0 0 200 200" role="img" aria-label="Sello del escorcianismo, 2026">
+        <defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+        <circle cx="100" cy="100" r="98" class="b-bg"/>
+        <g class="b-spin"><text class="b-txt"><textPath href="#circ" textLength="486" lengthAdjust="spacing">CENTROIZQUIERDA DE LA MANO FIRME • SIN DOGMA, CON RIGOR • </textPath></text></g>
+        <text x="100" y="114" text-anchor="middle" class="b-mid">2026</text>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <div class="marquee__grp">
+      <span>Tolerancia cero con la corrupción</span><i></i>
+      <span>Ley pareja para todos</span><i></i>
+      <span>Empleo sobre subsidio</span><i></i>
+      <span>Ni menos Estado ni más Estado</span><i></i>
+      <span>Diagnóstico técnico, fuente verificable</span><i></i>
+      <span>Política limpia y auditable</span><i></i>
+      <span>Tanta libertad y mercado como sea posible</span><i></i>
+    </div>
+  </div>
+</div>
+
+<main>
+<section id="que-es" class="band">
+  <div class="wrap">
+    <div class="grid2">
+      <div class="rise">
+        <p class="eyebrow">Qué es</p>
+        <h2>Una síntesis de lo que ya funciona</h2>
+      </div>
+      <div class="prose rise">
+        <p class="big">Se presenta como una <mark>centroizquierda de la mano firme</mark>: ideas de izquierda y de derecha que, según sus promotores, han demostrado funcionar y tienen capacidad de crecimiento mayoritario.</p>
+        <p>Surgió el 28 de agosto de 2026 como respuesta a la división partidista tradicional y a la polarización del país. Busca separarse del conservadurismo y orientarse a un proyecto de avance social, político y económico que corrija las desigualdades estructurales.</p>
+        <p>Su aspiración es que Colombia funcione para todos los colombianos.</p>
+      </div>
+    </div>
+
+    <p class="eyebrow focus-t">Sus proyectos se centran en</p>
+    <div class="focus rise">
+      <div class="ftile ftile--sun">Seguridad</div>
+      <div class="ftile ftile--cobalt">Ambientalismo</div>
+      <div class="ftile ftile--coral">Igualdad</div>
+      <div class="ftile ftile--ink">Prosperidad económica</div>
+    </div>
+
+    <div class="vs rise">
+      <article class="card card--no">
+        <p class="tagline">Rechaza</p>
+        <ul><li>El populismo</li><li>El dogmatismo ideológico</li></ul>
+      </article>
+      <article class="card">
+        <p class="tagline">Prefiere</p>
+        <ul><li>Los consensos sobre la confrontación</li><li>Trabajar con partidos y dirigentes de distintas posiciones</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="divisa" class="split" aria-labelledby="divisa-t">
+  <h2 id="divisa-t" class="sr-only">La divisa del escorcianismo</h2>
+  <div class="split__stage" id="stage">
+    <div class="split__a">
+      <p class="eyebrow">Su divisa</p>
+      <p class="split__big">Tanta libertad y mercado</p>
+      <p class="split__sm">como sea posible</p>
+    </div>
+    <div class="split__b">
+      <p class="split__big">Tanto Estado y seguridad</p>
+      <p class="split__sm">como sea necesario</p>
+    </div>
+    <div class="split__handle" aria-hidden="true">
+      <div class="knob"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></div>
+      <div class="hintlbl">Arrastra</div>
+    </div>
+    <input class="sr-only" id="bal" type="range" min="30" max="70" value="50" aria-label="Mover el equilibrio entre mercado y Estado">
+  </div>
+</section>
+
+<section id="libertad" class="band">
+  <div class="wrap">
+    <p class="eyebrow">Su idea de libertad · Republicanismo social</p>
+    <h2>Libertad es no depender de una élite</h2>
+    <p class="big prose rise">Con una desigualdad económica extrema, la falta de independencia material deja a las personas sujetas a la voluntad de una élite. Ninguna libertad formal compensa eso. Por eso la igualdad hace parte de la libertad.</p>
+    <div class="vs compare rise">
+      <article class="card">
+        <p class="tagline">Liberalismo clásico</p>
+        <h3>Libertad como no interferencia</h3>
+        <p>Ser libre es que el Estado no se interponga. Es la libertad negativa: la simple ausencia de interferencia estatal.</p>
+      </article>
+      <article class="card card--hot">
+        <p class="tagline">Republicanismo social</p>
+        <h3>Libertad como no dominación</h3>
+        <p>Ser libre es no depender de la voluntad arbitraria de un tercero, y en particular de una élite económica o de poder.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="compromisos" class="band band--coral">
+  <div class="wrap">
+    <p class="eyebrow">Quien se adhiere asume</p>
+    <h2>Seis compromisos</h2>
+    <p class="lead">Toca los que compartes. Son la base de lo que significa adherir a esta corriente.</p>
+    <ul class="pledges" id="pledges">
+      <li><button class="pledge" type="button" aria-pressed="false"><span class="pledge__box" aria-hidden="true"></span><span class="pledge__h">Constitución y democracia</span><span class="pledge__t">Respetar y defender la Constitución, la ley y las decisiones de las autoridades legítimas, y actuar siempre por vías democráticas.</span><span class="stamp" aria-hidden="true">Firme</span></button></li>
+      <li><button class="pledge" type="button" aria-pressed="false"><span class="pledge__box" aria-hidden="true"></span><span class="pledge__h">Sin violencia</span><span class="pledge__t">Rechazar la violencia como medio de acción política y no promover, integrar ni permitir asociaciones ilegales.</span><span class="stamp" aria-hidden="true">Firme</span></button></li>
+      <li><button class="pledge" type="button" aria-pressed="false"><span class="pledge__box" aria-hidden="true"></span><span class="pledge__h">Sin economías ilegales</span><span class="pledge__t">Rechazar toda relación con el narcotráfico, la extorsión, el contrabando, la minería ilegal y el lavado de activos, y promover la sustitución de economías ilegales por oportunidades lícitas.</span><span class="stamp" aria-hidden="true">Firme</span></button></li>
+      <li><button class="pledge" type="button" aria-pressed="false"><span class="pledge__box" aria-hidden="true"></span><span class="pledge__h">Sin dinero criminal</span><span class="pledge__t">No recibir apoyo ni financiación de grupos armados ilegales, organizaciones criminales o actividades ilícitas.</span><span class="stamp" aria-hidden="true">Firme</span></button></li>
+      <li><button class="pledge" type="button" aria-pressed="false"><span class="pledge__box" aria-hidden="true"></span><span class="pledge__h">Protesta pacífica</span><span class="pledge__t">Garantizar el derecho a la protesta pacífica y proteger a los líderes sociales, sin tolerar la violencia contra personas, bienes o instituciones.</span><span class="stamp" aria-hidden="true">Firme</span></button></li>
+      <li><button class="pledge" type="button" aria-pressed="false"><span class="pledge__box" aria-hidden="true"></span><span class="pledge__h">Ley pareja</span><span class="pledge__t">Aplicar tolerancia cero frente a la corrupción y la violencia, incluso cuando involucren a aliados o militantes: ley pareja para todos.</span><span class="stamp" aria-hidden="true">Firme</span></button></li>
+    </ul>
+    <div class="pledge-meta" aria-live="polite"><b id="pc">0</b><span>de 6 compromisos marcados.</span><span id="pmsg">Toca cada tarjeta para marcarla.</span></div>
+  </div>
+</section>
+
+<section id="ejes" class="band">
+  <div class="wrap">
+    <p class="eyebrow">Programa</p>
+    <h2>Seis ejes programáticos</h2>
+    <div class="axes">
+      <div class="axes__tabs" role="tablist" aria-label="Ejes programáticos">
+        <button class="tab" role="tab" id="t-op" aria-selected="true" aria-controls="p-op" data-c="sun">Oportunidad</button>
+        <button class="tab" role="tab" id="t-se" aria-selected="false" aria-controls="p-se" data-c="coral" tabindex="-1">Seguridad</button>
+        <button class="tab" role="tab" id="t-ri" aria-selected="false" aria-controls="p-ri" data-c="cobalt" tabindex="-1">Rigor</button>
+        <button class="tab" role="tab" id="t-re" aria-selected="false" aria-controls="p-re" data-c="sun" tabindex="-1">Renovación</button>
+        <button class="tab" role="tab" id="t-ce" aria-selected="false" aria-controls="p-ce" data-c="coral" tabindex="-1">Cercanía</button>
+        <button class="tab" role="tab" id="t-fu" aria-selected="false" aria-controls="p-fu" data-c="cobalt" tabindex="-1">Futuro</button>
+      </div>
+      <div>
+        <div class="panel" role="tabpanel" id="p-op" aria-labelledby="t-op" data-c="sun" data-name="Oportunidad">
+          <h3>Oportunidad</h3>
+          <p class="lead">Un mercado que genere empleo y un Estado que garantice derechos. Más que subsidios, oportunidad de producir.</p>
+          <ul class="chips"><li>Impuestos progresivos</li><li>Empleo sobre subsidio</li><li>Vivienda</li><li>Salud</li><li>Derechos laborales</li></ul>
+        </div>
+        <div class="panel" role="tabpanel" id="p-se" aria-labelledby="t-se" data-c="coral" data-name="Seguridad" hidden>
+          <h3>Seguridad</h3>
+          <p class="lead">Tolerancia cero con la violencia, la extorsión y la corrupción. Garantías plenas para quien protesta en paz y aplicación de la ley a quien no lo hace.</p>
+          <ul class="chips"><li>Protesta pacífica</li><li>Protección a líderes sociales</li><li>Sustitución de economías ilegales</li></ul>
+        </div>
+        <div class="panel" role="tabpanel" id="p-ri" aria-labelledby="t-ri" data-c="cobalt" data-name="Rigor" hidden>
+          <h3>Rigor</h3>
+          <p class="lead">Toda propuesta cuenta con diagnóstico técnico, fuente verificable y ruta de ejecución viable dentro del marco constitucional.</p>
+          <ul class="chips"><li>Diagnóstico técnico</li><li>Fuente verificable</li><li>Ruta de ejecución</li></ul>
+        </div>
+        <div class="panel" role="tabpanel" id="p-re" aria-labelledby="t-re" data-c="sun" data-name="Renovación" hidden>
+          <h3>Renovación</h3>
+          <p class="lead">Una política limpia y auditable por cualquier ciudadano.</p>
+          <ul class="chips"><li>Código de ética</li><li>Gobierno abierto</li><li>Democracia interna</li><li>Primarias</li><li>Límites a la reelección</li><li>Paridad y cuota joven</li></ul>
+        </div>
+        <div class="panel" role="tabpanel" id="p-ce" aria-labelledby="t-ce" data-c="coral" data-name="Cercanía" hidden>
+          <h3>Cercanía</h3>
+          <p class="lead">Un Estado presente en todo el territorio, y no solo donde hay protesta.</p>
+          <ul class="chips"><li>Ventanillas únicas</li><li>Justicia móvil</li><li>Gobierno electrónico con conectividad</li><li>Carrera administrativa</li></ul>
+        </div>
+        <div class="panel" role="tabpanel" id="p-fu" aria-labelledby="t-fu" data-c="cobalt" data-name="Futuro" hidden>
+          <h3>Futuro</h3>
+          <p class="lead">Tecnología, industria verde y ambiente como motores de crecimiento.</p>
+          <ul class="chips"><li>Ciencia y tecnología</li><li>Industria verde</li><li>Protección ambiental</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="vs vs--axes rise">
+      <article class="card">
+        <p class="tagline">Seguridad</p>
+        <h3>Lo que el Estado hace contra algo</h3>
+        <p>Crimen, violencia, corrupción armada.</p>
+      </article>
+      <article class="card">
+        <p class="tagline">Cercanía</p>
+        <h3>Lo que el Estado hace para alguien</h3>
+        <p>Servicios, trámites, justicia, atención.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="estado" class="band band--sun">
+  <div class="wrap">
+    <p class="eyebrow">Teoría de la reorganización</p>
+    <h2>Ni menos Estado ni más Estado: mejor organizado</h2>
+    <p class="lead">Para el escorcianismo, el problema del Estado colombiano no es de tamaño sino de organización. La derecha tiende a hablar de reducir y la izquierda de aumentar. Esta corriente propone reorganizar: fusionar entidades con competencias duplicadas o complementarias, sin despidos masivos y reubicando al personal.</p>
+
+    <div class="reorg" id="reorg" data-mode="hoy">
+      <div class="reorg__head">
+        <div class="seg" role="group" aria-label="Vista">
+          <button type="button" data-m="hoy" aria-pressed="true">Hoy</button>
+          <button type="button" data-m="propuesta" aria-pressed="false">Propuesta</button>
+        </div>
+        <p class="counter" aria-live="polite"><b id="rc">23</b><span>entidades</span></p>
+      </div>
+      <ul class="fusions">
+        <li class="fusion" data-n="2"><div class="fusion__now"><span class="chip">Ministerio de Cultura</span><span class="chip">Ministerio del Deporte</span></div><div class="fusion__new">Ministerio de Cultura, Deporte y Recreación</div></li>
+        <li class="fusion" data-n="2"><div class="fusion__now"><span class="chip">Ministerio TIC</span><span class="chip">Ministerio de Ciencia</span></div><div class="fusion__new">Ministerio de Ciencia, Tecnología e Innovación Digital</div></li>
+        <li class="fusion" data-n="2"><div class="fusion__now"><span class="chip">Ministerio de Salud</span><span class="chip">Ministerio del Trabajo</span></div><div class="fusion__new">Ministerio de Salud, Trabajo y Protección Social</div></li>
+        <li class="fusion" data-n="2"><div class="fusion__now"><span class="chip">Ministerio del Interior</span><span class="chip">Ministerio de Justicia</span></div><div class="fusion__new">Ministerio del Interior y de Justicia</div></li>
+        <li class="fusion" data-n="2"><div class="fusion__now"><span class="chip">Ministerio de Agricultura</span><span class="chip">Ministerio de Ambiente</span></div><div class="fusion__new">Ministerio de Desarrollo Rural y Ambiente Sostenible</div></li>
+        <li class="fusion" data-n="2"><div class="fusion__now"><span class="chip">Ministerio de Transporte</span><span class="chip">Ministerio de Vivienda</span></div><div class="fusion__new">Ministerio de Infraestructura, Vivienda y Territorio</div></li>
+        <li class="fusion" data-n="2"><div class="fusion__now"><span class="chip">Ministerio de Hacienda</span><span class="chip">Ministerio de Comercio, Industria y Turismo</span></div><div class="fusion__new">Ministerio de Hacienda, Industria y Comercio</div></li>
+        <li class="fusion" data-n="2"><div class="fusion__now"><span class="chip">CREG</span><span class="chip">CRA</span></div><div class="fusion__new">Comisión de Regulación de Energía, Gas y Agua</div></li>
+        <li class="fusion" data-n="2"><div class="fusion__now"><span class="chip">Supersolidaria</span><span class="chip">Supersubsidio</span></div><div class="fusion__new">Superintendencia del Desarrollo Social</div></li>
+        <li class="fusion" data-n="5"><div class="fusion__now"><span class="chip">ANT</span><span class="chip">ADR</span><span class="chip">ART</span><span class="chip">URT</span><span class="chip">IGAC</span></div><div class="fusion__new">Agencia de Territorio y Desarrollo Rural</div></li>
+      </ul>
+      <div class="reorg-foot">
+        <article class="card">
+          <p class="tagline">Gradual y evaluable</p>
+          <h3>Riesgos que sus promotores reconocen</h3>
+        </article>
+        <article class="card">
+          <ul style="list-style:none;padding:0;display:grid;gap:.6rem;font-weight:600">
+            <li>Concentrar reformas conflictivas en una sola cartera.</li>
+            <li>Diluir sectores con públicos y gremios distintos.</li>
+            <li>Poner bajo un mismo mando al regulador y al promotor de una actividad.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="futuro" class="band band--ink">
+  <div class="wrap">
+    <div class="tecno">
+      <div class="rise">
+        <p class="eyebrow">Componente económico</p>
+        <h2>Tecnodesarrollismo</h2>
+        <p class="lead">Usar la ciencia, la tecnología y la innovación para crecer más rápido, producir con valor agregado y dejar de depender de la exportación de materias primas.</p>
+      </div>
+      <ul class="rules rise">
+        <li>Liderada por el Estado</li>
+        <li>Sostenida en el largo plazo</li>
+        <li>Protegida de los ciclos de gobierno</li>
+      </ul>
+    </div>
+
+    <div class="tiles rise">
+      <div class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-2 8 11-13h-7z"/></svg>Energía</div>
+      <div class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V10M12 10C12 6 9 4 4 4c0 4 2 6 8 6M12 14c0-3 2-5 8-5 0 4-3 6-8 6"/></svg>Agrotecnología</div>
+      <div class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>Software</div>
+      <div class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 4v8l-7 4-7-4V7z"/><circle cx="12" cy="11" r="2.5"/></svg>Biotecnología</div>
+    </div>
+
+    <div class="ladder" aria-hidden="true">
+      <div class="ladder__lbl"><span>Materias primas</span><span>Valor agregado</span></div>
+      <div class="ladder__track"><span class="ladder__fill"></span></div>
+    </div>
+    <p class="lead rise" style="margin-top:1.5rem">Busca elevar la productividad y la competitividad de forma incluyente y sostenible.</p>
+  </div>
+</section>
+
+<section id="valores" class="band">
+  <div class="wrap">
+    <p class="eyebrow">Puntos de encuentro</p>
+    <h2>Valores que muchos pueden compartir</h2>
+    <p class="lead">El escorcianismo no pretende que todas las posiciones coincidan. Busca los valores que personas de distintas orientaciones pueden compartir.</p>
+    <div class="vals rise">
+      <article class="val"><h3>Libertad, empresa y mercado</h3><p>Economía de mercado con competencia real, seguridad jurídica y menos trámites.</p></article>
+      <article class="val"><h3>Orden, seguridad y ley</h3><p>Tolerancia cero con la violencia y el crimen, y ley igual para todos.</p></article>
+      <article class="val"><h3>Justicia social y dignidad</h3><p>Impuestos progresivos, salud, vivienda y derechos laborales.</p></article>
+      <article class="val"><h3>Honestidad pública</h3><p>Anticorrupción, transparencia y control ciudadano.</p></article>
+      <article class="val"><h3>Soberanía y desarrollo</h3><p>Producción con valor agregado, ciencia e industria nacional.</p></article>
+      <article class="val"><h3>Respeto a la Constitución</h3><p>Cambio por vías legales, con garantías para todos.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id='test' class='band band--sun'>
+  <div class='wrap'>
+    <p class='eyebrow'>Test</p>
+    <h2>¿Escorcianista o escorcianista conservador?</h2>
+    <p class='lead'>Trece afirmaciones. Responde qué tan de acuerdo estás con cada una y verás en qué línea cae tu pensamiento y dónde te ubicas en el mapa.</p>
+    <div class='vs lines'>
+      <article class='card'><p class='tagline'>Línea central</p><h3>Escorcianismo</h3><p>Centroizquierda de la mano firme: derechos amplios, mercado con competencia y un Estado reorganizado y estratégico, ni más grande ni más pequeño.</p></article>
+      <article class='card'><p class='tagline'>Conservadurismo progresista</p><h3>Escorcianismo Conservador</h3><p>Algo más prudente en lo social, pero sigue apoyando los derechos y la justicia social. Quiere un Estado más reducido, cercano al minarquismo.</p></article>
+    </div>
+
+    <div class='card quiz' id='quiz'>
+      <div class='stack' id='qbody'>
+        <div class='quiz__top'><p class='quiz__count' id='qc'>Pregunta 1 de 13</p><div class='quiz__bar'><span id='qbar'></span></div></div>
+        <h3 class='quiz__q' id='qq' tabindex='-1'>Cargando…</h3>
+        <div class='likert' id='likert' role='group' aria-label='Qué tan de acuerdo estás'>
+          <button type='button' data-v='-2'>Muy en desacuerdo</button>
+          <button type='button' data-v='-1'>En desacuerdo</button>
+          <button type='button' data-v='0'>Neutral</button>
+          <button type='button' data-v='1'>De acuerdo</button>
+          <button type='button' data-v='2'>Muy de acuerdo</button>
+        </div>
+        <div class='quiz__nav'><button type='button' class='linkbtn' id='qback' hidden>← Atrás</button></div>
+      </div>
+
+      <div class='stack' id='qres' hidden aria-live='polite'>
+        <p class='quiz__count'>Tu resultado</p>
+        <h3 class='res__t' id='rt' tabindex='-1'></h3>
+        <p class='res__d' id='rd'></p>
+        <div class='res__grid'>
+          <div class='bars'>
+            <div class='bar__row bar__row--esc'><p class='bar__lbl'><span>Escorcianismo</span><span id='pe'>0%</span></p><div class='bar__trk'><span id='be'></span></div></div>
+            <div class='bar__row bar__row--con'><p class='bar__lbl'><span>Escorcianismo Conservador</span><span id='pcn'>0%</span></p><div class='bar__trk'><span id='bc'></span></div></div>
+            <p class='res__line' id='rs'></p>
+          </div>
+          <svg class='map' id='map' viewBox='0 0 340 330' role='img' aria-label='Mapa de posiciones: de más conservador a más progresista en lo social, y de Estado mínimo a Estado activo y reorganizado'>
+            <defs><clipPath id='mclip'><rect x='40' y='30' width='260' height='260'/></clipPath></defs>
+            <rect class='m-box' x='40' y='30' width='260' height='260'/>
+            <line class='m-ax' x1='170' y1='30' x2='170' y2='290'/><line class='m-ax' x1='40' y1='160' x2='300' y2='160'/>
+            <g clip-path='url(#mclip)'><circle class='m-esc' cx='254' cy='95' r='58'/><circle class='m-con' cx='157' cy='231' r='58'/></g>
+            <text class='m-t m-t--esc' x='246' y='99'>Escorcianismo</text>
+            <text class='m-t m-t--con' x='157' y='235'>Conservador</text>
+            <text class='m-ax-t' x='170' y='20'>Estado activo y reorganizado</text>
+            <text class='m-ax-t' x='170' y='316'>Estado mínimo</text>
+            <text class='m-ax-t' transform='translate(16 160) rotate(-90)'>Más conservador</text>
+            <text class='m-ax-t' transform='translate(324 160) rotate(90)'>Más progresista</text>
+            <circle class='m-dot' id='dot' cx='170' cy='160' r='9'/>
+          </svg>
+        </div>
+        <p><button type='button' class='btn' id='qredo'>Repetir el test</button></p>
+      </div>
+    </div>
+    <p class='eyebrow' style='margin-top:1.6rem'>Es un juego de orientación sobre estas dos líneas. No es una encuesta científica ni te dice por quién votar.</p>
+  </div>
+</section>
+</main>
+
+<footer class="band band--cobalt foot">
+  <div class="wrap">
+    <p class="foot__w">Escorcianismo</p>
+    <div class="foot__row">
+      <p class="lead">Tanta libertad y mercado como sea posible, tanto Estado y seguridad como sea necesario.</p>
+      <a class="btn" href="#inicio">Volver arriba</a>
+    </div>
+    <p class="eyebrow" style="margin-top:2.5rem">Corriente sociopolítica colombiana propuesta por Iris Maia Escorcia Duque · 28 de agosto de 2026</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Marquee: duplica el grupo para un bucle continuo */
+  var g=$('.marquee__grp'); if(g){ g.parentNode.appendChild(g.cloneNode(true)); }
+
+  /* Progreso de lectura */
+  var bar=$('#bar'), tick=false;
+  function onScroll(){
+    if(tick) return; tick=true;
+    requestAnimationFrame(function(){
+      var h=document.documentElement, max=h.scrollHeight-h.clientHeight;
+      var p=max>0?Math.min(1,Math.max(0,window.scrollY/max)):0;
+      bar.style.transform='scaleX('+p+')'; tick=false;
+    });
+  }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  /* Sección activa en la navegación */
+  var navl=$('#navlinks'), links=$$('#navlinks a'), map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var a=map[e.target.id]; if(!a) return;
+      links.forEach(function(l){l.removeAttribute('aria-current')});
+      a.setAttribute('aria-current','true');
+      navl.scrollTo({left:Math.max(0,a.offsetLeft-24),behavior:reduce?'auto':'smooth'});
+    });
+  },{rootMargin:'-40% 0px -55% 0px'});
+  Object.keys(map).forEach(function(id){var s=document.getElementById(id); if(s) io.observe(s)});
+
+  /* Divisa arrastrable */
+  var stage=$('#stage'), bal=$('#bal'), wide=matchMedia('(min-width: 760px)');
+  var drag=false, touched=false;
+  function setS(v){
+    v=Math.max(30,Math.min(70,v));
+    stage.style.setProperty('--s',v+'%'); bal.value=Math.round(v);
+  }
+  function move(e){var r=stage.getBoundingClientRect(); setS((e.clientX-r.left)/r.width*100)}
+  stage.addEventListener('pointerdown',function(e){
+    if(!wide.matches) return;
+    drag=true; touched=true; stage.classList.add('is-drag');
+    try{stage.setPointerCapture(e.pointerId)}catch(_){}
+    move(e);
+  });
+  stage.addEventListener('pointermove',function(e){if(drag) move(e)});
+  function end(){drag=false; stage.classList.remove('is-drag')}
+  stage.addEventListener('pointerup',end); stage.addEventListener('pointercancel',end);
+  bal.addEventListener('input',function(){touched=true; setS(+bal.value)});
+  if(!reduce && 'IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es,ob){
+      if(!es[0].isIntersecting) return;
+      ob.disconnect();
+      if(touched||!wide.matches) return;
+      var t0=performance.now(), D=1800;
+      (function f(t){
+        if(touched) return;
+        var k=Math.min(1,(t-t0)/D);
+        setS(50+10*Math.sin(k*Math.PI*2)*(1-k));
+        if(k<1) requestAnimationFrame(f); else setS(50);
+      })(t0);
+    },{threshold:.6});
+    so.observe(stage);
+  }
+
+  /* Compromisos */
+  var pledges=$$('.pledge'), pc=$('#pc'), pm=$('#pmsg');
+  function updPledges(){
+    var n=pledges.filter(function(b){return b.getAttribute('aria-pressed')==='true'}).length;
+    pc.textContent=n;
+    pm.textContent = n===0 ? 'Toca cada tarjeta para marcarla.'
+      : n===6 ? 'Los seis. Esa es la base del escorcianismo.'
+      : (6-n===1 ? 'Falta 1.' : 'Faltan '+(6-n)+'.');
+  }
+  pledges.forEach(function(b){
+    b.addEventListener('click',function(){
+      b.setAttribute('aria-pressed', b.getAttribute('aria-pressed')==='true'?'false':'true');
+      updPledges();
+    });
+  });
+
+  /* Ejes */
+  var tabs=$$('[role=tab]');
+  function sel(t,focus){
+    tabs.forEach(function(x){
+      var on=x===t;
+      x.setAttribute('aria-selected',on?'true':'false'); x.tabIndex=on?0:-1;
+      document.getElementById(x.getAttribute('aria-controls')).hidden=!on;
+    });
+    if(focus) t.focus();
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){sel(t)});
+    t.addEventListener('keydown',function(e){
+      var j=null,k=e.key,n=tabs.length;
+      if(k==='ArrowDown'||k==='ArrowRight') j=(i+1)%n;
+      if(k==='ArrowUp'||k==='ArrowLeft') j=(i-1+n)%n;
+      if(k==='Home') j=0; if(k==='End') j=n-1;
+      if(j!==null){e.preventDefault(); sel(tabs[j],true)}
+    });
+  });
+
+  /* Reorganización del Estado */
+  var reorg=$('#reorg'), segs=$$('.seg button',reorg), rc=$('#rc');
+  var fus=$$('.fusion',reorg);
+  var total=fus.reduce(function(a,li){return a+(+li.dataset.n)},0), merged=fus.length;
+  var raf=0;
+  function tween(from,to){
+    cancelAnimationFrame(raf);
+    if(reduce){rc.textContent=to; return}
+    var t0=performance.now(), D=700;
+    (function f(t){
+      var k=Math.min(1,(t-t0)/D), e=1-Math.pow(1-k,3);
+      rc.textContent=Math.round(from+(to-from)*e);
+      if(k<1) raf=requestAnimationFrame(f);
+    })(t0);
+  }
+  function setMode(m){
+    reorg.dataset.mode=m;
+    segs.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===m?'true':'false')});
+    fus.forEach(function(li){
+      $('.fusion__now',li).setAttribute('aria-hidden',m==='propuesta'?'true':'false');
+      $('.fusion__new',li).setAttribute('aria-hidden',m==='propuesta'?'false':'true');
+    });
+    tween(+rc.textContent, m==='hoy'?total:merged);
+  }
+  segs.forEach(function(b){b.addEventListener('click',function(){setMode(b.dataset.m)})});
+  rc.textContent=total; setMode('hoy');
+
+  /* Test: escorcianismo o escorcianismo conservador */
+  var Q=[
+    {t:'El aborto debe estar garantizado por la ley como un derecho.',a:'S',w:1},
+    {t:'El Estado debe liderar una estrategia de largo plazo en ciencia, tecnología e industria.',a:'E',w:1},
+    {t:'Rechazo la violencia como medio de acción política, venga de donde venga.',a:'C',w:1},
+    {t:'La eutanasia debe estar permitida, con garantías y control.',a:'S',w:1},
+    {t:'El problema del Estado no es su tamaño sino su organización: conviene fusionar entidades, no recortar sus funciones.',a:'E',w:1},
+    {t:'Las parejas del mismo sexo deben poder adoptar en las mismas condiciones que cualquier pareja.',a:'S',w:1},
+    {t:'El Estado debería limitarse sobre todo a seguridad, justicia y defensa, y dejar el resto al mercado y a la sociedad civil.',a:'E',w:-1},
+    {t:'La ley debe aplicarse igual a aliados y adversarios, incluso en casos de corrupción.',a:'C',w:1},
+    {t:'Las políticas públicas deben orientarse por razones laicas, sin influencia de ninguna religión.',a:'S',w:1},
+    {t:'Es mejor ayudar a quien lo necesita con subsidios focalizados que con grandes servicios públicos universales.',a:'E',w:-1},
+    {t:'La familia y las tradiciones culturales merecen un lugar especial en la política pública.',a:'S',w:-1},
+    {t:'Muchas funciones y empresas del Estado deberían pasar al sector privado o a la sociedad civil.',a:'E',w:-1},
+    {t:'Una sociedad decente garantiza derechos y justicia social a quienes menos tienen.',a:'C',w:1}
+  ];
+  var R={
+    esc:{t:'Eres escorcianista',d:'Tu pensamiento encaja con la centroizquierda de la mano firme: derechos amplios, mercado con competencia y un Estado reorganizado y estratégico, ni más grande ni más pequeño.'},
+    con:{t:'Eres escorcianista conservador',d:'Compartes el núcleo del escorcianismo, pero con un tono más prudente en lo social y un Estado más reducido, cercano al minarquismo: pocas funciones y bien hechas. Sigues defendiendo los derechos y la justicia social.'},
+    mid:{t:'Estás entre las dos líneas',d:'Compartes lo esencial de ambas. Tu diferencia con cada una es de grado: en lo social, en el tamaño del Estado, o en las dos cosas.'},
+    far:{t:'Estás lejos de ambas líneas',d:'Compartes el núcleo común, pero tus respuestas sobre lo social y el Estado se alejan de las dos posiciones.'},
+    out:{t:'Estás fuera del núcleo común',d:'Marcaste desacuerdo con parte de lo que comparten las dos líneas: rechazo de la violencia, ley pareja y justicia social. Sin ese núcleo, ninguna de las dos encaja.'}
+  };
+  var qa=[], qi=0, busy=false;
+  var qc=$('#qc'), qbar=$('#qbar'), qq=$('#qq'), qbody=$('#qbody'), qres=$('#qres'), qback=$('#qback'), lk=$$('#likert button');
+  function renderQ(focus){
+    qc.textContent='Pregunta '+(qi+1)+' de '+Q.length;
+    qbar.style.width=(qi/Q.length*100)+'%';
+    qq.textContent=Q[qi].t;
+    lk.forEach(function(b){b.setAttribute('aria-pressed', (qa[qi]!==undefined && +b.dataset.v===qa[qi])?'true':'false')});
+    qback.hidden=(qi===0);
+    if(focus) qq.focus({preventScroll:true});
+  }
+  function mean(axis){
+    var s=0,n=0;
+    Q.forEach(function(q,i){ if(q.a===axis){ s+=qa[i]*q.w; n++ } });
+    return s/n;
+  }
+  function aff(S,E,px,py){
+    var d=Math.sqrt((S-px)*(S-px)+(E-py)*(E-py));
+    return Math.round(100*Math.max(0,1-d/3.4));
+  }
+  function sLabel(S){return S>0.7?'más progresista':S<-0.3?'más prudente':'moderado'}
+  function eLabel(E){return E>0.4?'más cerca de un Estado reorganizado y activo':E<-0.4?'más cerca de un Estado reducido':'en un punto intermedio'}
+  function finish(){
+    var S=mean('S'), E=mean('E'), C=mean('C');
+    var ae=aff(S,E,1.3,1.0), ac=aff(S,E,-0.2,-1.1), key;
+    if(C<0) key='out';
+    else if(Math.max(ae,ac)<35) key='far';
+    else if(Math.abs(ae-ac)<8) key='mid';
+    else key=ae>ac?'esc':'con';
+    $('#rt').textContent=R[key].t; $('#rd').textContent=R[key].d;
+    $('#rs').textContent='En lo social saliste '+sLabel(S)+'; sobre el tamaño y el papel del Estado, '+eLabel(E)+'.';
+    $('#pe').textContent=ae+'%'; $('#pcn').textContent=ac+'%';
+    qbar.style.width='100%'; qbody.hidden=true; qres.hidden=false;
+    requestAnimationFrame(function(){requestAnimationFrame(function(){
+      $('#be').style.width=ae+'%'; $('#bc').style.width=ac+'%';
+      $('#dot').style.transform='translate('+(S*65)+'px,'+(-E*65)+'px)';
+    })});
+    $('#rt').focus({preventScroll:true});
+    $('#quiz').scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'});
+  }
+  lk.forEach(function(b){
+    b.addEventListener('click',function(){
+      if(busy) return;
+      busy=true;
+      qa[qi]=+b.dataset.v;
+      lk.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+      setTimeout(function(){
+        busy=false;
+        if(qi<Q.length-1){qi++; renderQ(true)} else finish();
+      }, reduce?0:260);
+    });
+  });
+  qback.addEventListener('click',function(){ if(qi>0){qi--; renderQ(true)} });
+  $('#qredo').addEventListener('click',function(){
+    qa=[]; qi=0; busy=false;
+    qres.hidden=true; qbody.hidden=false;
+    $('#be').style.width='0'; $('#bc').style.width='0'; $('#dot').style.transform='';
+    renderQ(true);
+    $('#quiz').scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'});
+  });
+  renderQ(false);
+
+})();
+</script>
+
+</body></html>
